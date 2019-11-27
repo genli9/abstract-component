@@ -1,8 +1,12 @@
 package com.ligen.process.choreographer;
 
-public interface Node<T> {
+/**
+ * todo 后期Context可以加入限定类型，提供某些方法
+ * @param <T>
+ */
+public interface Node<T extends AbstractProcessContext> {
 
-    String nodeName();
+  String nodeName();
 
-    void execute(T context);
+  void execute(T context);
 }

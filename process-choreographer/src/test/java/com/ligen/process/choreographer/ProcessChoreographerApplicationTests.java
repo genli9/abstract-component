@@ -16,7 +16,7 @@ class ProcessChoreographerApplicationTests {
 
     @Test
     public void test1() {
-        processTrigger.fire("type1", "code1", new TestContext());
+        processTrigger.fire("code1", "operation1", new TestContext());
     }
 
 }

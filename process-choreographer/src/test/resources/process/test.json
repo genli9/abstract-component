@@ -1,7 +1,7 @@
 [
   {
-    "biz_type": "type1",
     "biz_code": "code1",
+    "operation": "operation1",
     "nodes": [
       "node1",
       "node2"

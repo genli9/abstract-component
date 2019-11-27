@@ -26,7 +26,7 @@ public final class JsonUtils {
         objectMapper.setVisibility(PropertyAccessor.ALL, NONE).setVisibility(FIELD, ANY);
     }
 
-    public static <T> List<T> deSerializeList(File input, Class<T> clazz) throws Exception {
-        return (List<T>) objectMapper.readValue(input, new TypeReference<List<ProcessDefinition>>() {});
+    public static ObjectMapper getObjectMapper() {
+        return objectMapper;
     }
 }

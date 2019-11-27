@@ -15,6 +15,7 @@
 
     <modules>
         <module>process-choreographer</module>
+        <module>extension-points</module>
     </modules>
 
     <properties>

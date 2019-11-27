@@ -11,9 +11,9 @@ import java.util.List;
 @Setter
 public class ProcessDefinition {
 
-    private String bizType;
-
     private String bizCode;
+
+    private String operation;
 
     @JsonProperty("nodes")
     private List<String> nodeNames;

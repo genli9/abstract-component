@@ -1,4 +1,4 @@
 package com.ligen.process.choreographer;
 
-public class TestContext {
+public class TestContext extends AbstractProcessContext{
 }

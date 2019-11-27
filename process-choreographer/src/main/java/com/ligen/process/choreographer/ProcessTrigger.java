@@ -12,20 +12,25 @@ import java.util.List;
 public class ProcessTrigger {
 
     @Autowired
-    private ProcessRegistry processRegistry;
+    private ProcessRegister processRegister;
 
-    public void fire(String bizType, String bizCode, Object context) throws ProcessException{
-        List<Node> nodes = processRegistry.findProcess(bizType, bizCode);
+    public void fire(String bizCode, String operation, AbstractProcessContext context) throws ProcessException {
+        List<Node> nodes = processRegister.findProcess(bizCode, operation);
         if (nodes == null || nodes.size() == 0) {
-            log.error("doesn't find any processes by bizCode: {}， biz_type: {}", bizCode, bizType);
-            throw new ProcessException("doesn't find any processes by bizType or bizCode");
+            log.error("doesn't find any processes by bizCode: {}， operation: {}", bizCode, operation);
+            throw new ProcessException("doesn't find any processes by bizCode or operation");
         }
+        context.setBizCode(bizCode);
+        context.setOperation(operation);
         for (Node n : nodes) {
             try {
                 n.execute(context);
+            } catch (ProcessException e) {
+                throw e;
             } catch (Exception e) {
-                log.error("process execution error, biz_type: {}, biz_code: {}, nodeName: {}, err: {}",
-                        bizType, bizCode, n.nodeName(), Throwables.getStackTraceAsString(e));
+                log.error("process execution error, biz_code: {}, operation: {}, nodeName: {}, err: {}",
+                        bizCode, operation, n.nodeName(), Throwables.getStackTraceAsString(e));
+                throw new ProcessException(e);
             }
         }
     }

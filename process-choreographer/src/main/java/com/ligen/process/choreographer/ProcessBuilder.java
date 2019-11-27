@@ -18,10 +18,10 @@ public class ProcessBuilder implements CommandLineRunner {
     private ProcessDefinitionParser processDefinitionParser;
 
     @Autowired
-    private ProcessRegistry processRegistry;
+    private ProcessRegister processRegister;
 
     @Autowired
-    private NodeBeanRegistry nodeBeanRegistry;
+    private NodeBeanRegister nodeBeanRegister;
 
     @Override
     public void run(String... strings) throws Exception {
@@ -33,14 +33,14 @@ public class ProcessBuilder implements CommandLineRunner {
         for (ProcessDefinition definition : definitions) {
             List<Node> nodes = new ArrayList<>(definition.getNodeNames().size());
             for (String nodeName : definition.getNodeNames()) {
-                Node node = nodeBeanRegistry.findNodeByName(nodeName);
+                Node node = nodeBeanRegister.findNodeByName(nodeName);
                 if (node == null) {
                     log.error("no node named : {}", nodeName);
                     throw new ProcessException("doesn't get any nodeObjects by name");
                 }
                 nodes.add(node);
             }
-            processRegistry.registerSingleProcess(definition.getBizType(), definition.getBizCode(), nodes);
+            processRegister.registerSingleProcess(definition.getBizCode(), definition.getOperation(), nodes);
         }
     }
 }

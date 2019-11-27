@@ -1,5 +1,6 @@
 package com.ligen.process.choreographer.definition;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.ligen.process.choreographer.JsonUtils;
 import com.ligen.process.choreographer.ProcessException;
 import lombok.extern.slf4j.Slf4j;
@@ -12,11 +13,13 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class FileProcessDefinitionParser implements ProcessDefinitionParser {
+public class JsonFileProcessDefinitionParser implements ProcessDefinitionParser {
 
     private static final String Process_Definition_Directory_Prefix = "process/";
 
     private static final String Process_Definition_File_Suffix = ".json";
+
+    private static final TypeReference<List<ProcessDefinition>> Process_Definition_Type_Reference = new TypeReference<List<ProcessDefinition>>() {};
 
     @Override
     public List<ProcessDefinition> parse() {
@@ -35,7 +38,7 @@ public class FileProcessDefinitionParser implements ProcessDefinitionParser {
         for (File definitionFile : definitionFiles) {
             if (definitionFile.getName().endsWith(Process_Definition_File_Suffix)) {
                 try {
-                    List<ProcessDefinition> pds = JsonUtils.deSerializeList(definitionFile, ProcessDefinition.class);
+                    List<ProcessDefinition> pds = JsonUtils.getObjectMapper().readValue(definitionFile, Process_Definition_Type_Reference);
                     definitions.addAll(pds);
                 } catch (Exception e) {
                     log.error("deSerialize process definition file error, fileName : {}, err : {}", definitionFile.getName(), e);
